@@ -25,7 +25,7 @@ export default function GameScreen({ data }) {
       }, 6000);
       setScore((pre) => pre + 1);
     } else {
-      setScore((pre) => pre - 1);
+      // setScore((pre) => pre - 1);
       wrongSound.play();
     }
 
