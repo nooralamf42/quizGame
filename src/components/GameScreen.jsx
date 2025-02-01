@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { gameContext } from "../App";
 import Timer from "./Timer";
 import ReactConfetti from "react-confetti";
@@ -6,6 +6,7 @@ import { rightSound, wrongSound } from "../constant";
 
 export default function GameScreen({ data }) {
   const time = new Date();
+  const timeoutRef = useRef(null);
   time.setSeconds(time.getSeconds() + 60 * data.duration);
   const { gameStatus, setGameStatus, score, setScore } =
     useContext(gameContext);
@@ -20,12 +21,15 @@ export default function GameScreen({ data }) {
     if (isCorrect) {
       setIsSelectedAnswerRight(true);
       rightSound.play();
-      setTimeout(() => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+      timeoutRef.current = setTimeout(() => {
         setIsSelectedAnswerRight(false);
-      }, 6000);
+      }, 4200);
       setScore((pre) => pre + 1);
     } else {
-      // setScore((pre) => pre - 1);
       wrongSound.play();
     }
 
